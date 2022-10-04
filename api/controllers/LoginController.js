@@ -15,6 +15,7 @@ module.exports = {
 
   login: (req, res) => {
     let sql = `SELECT COUNT(*) AS result FROM users WHERE name = '${req.body.email}' AND password = '${req.body.password}'`;
+
     db.query(sql, (err, response) => {
       if (err) throw err;
       res.json(response);
