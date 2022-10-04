@@ -3,10 +3,12 @@ import React, { useEffect, useState } from 'react';
 import Btn from '../components/Btn';
 import Input from '../components/Input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
-const Home = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const Home = ({ navigation, route }) => {
+  const [email, setEmail] = useState(route.params.email);
+  const [password, setPassword] = useState(route.params.password);
+  const [userId, setUserId] = useState('');
 
   useEffect(() => {
     getData();
@@ -14,13 +16,14 @@ const Home = ({ navigation }) => {
 
   const getData = () => {
     try {
-      AsyncStorage.getItem('UserData').then((value) => {
-        if (value != null) {
-          let user = JSON.parse(value);
-          setEmail(user.Email);
-          setPassword(user.Password);
-        }
-      });
+      axios
+        .post(`http://192.168.0.104:3000/login/getuser`, {
+          email: email,
+          password: password,
+        })
+        .then((response) => {
+          setUserId(response.data.id);
+        });
     } catch (error) {
       console.log(error);
     }
@@ -31,11 +34,15 @@ const Home = ({ navigation }) => {
       Alert.alert('Warning!', 'Please write your data.');
     } else {
       try {
-        var user = {
-          Password: password,
-        };
-        await AsyncStorage.mergeItem('UserData', JSON.stringify(user));
-        Alert.alert('Success!', 'Your data has been updated.');
+        axios
+          .post(`http://192.168.0.104:3000/login/updateuser/${userId}`, {
+            password: password,
+          })
+          .then((response) => {
+            if (response.data) {
+              Alert.alert('Success!', 'Your data has been updated.');
+            }
+          });
       } catch (error) {
         console.log(error);
       }
@@ -45,7 +52,14 @@ const Home = ({ navigation }) => {
   const removeData = async () => {
     try {
       await AsyncStorage.clear();
-      navigation.navigate('sigin');
+
+      axios
+        .post(`http://192.168.0.104:3000/login/deleteuser/${userId}`)
+        .then((response) => {
+          if (response.data) {
+            navigation.navigate('sigin');
+          }
+        });
     } catch (error) {
       console.log(error);
     }

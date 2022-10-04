@@ -16,13 +16,16 @@ const Signin = ({ navigation }) => {
   const getData = () => {
     try {
       axios
-        .get(`http://localhost:3000/login/checklogin`, {
+        .get(`http://192.168.0.104:3000/login/checklogin`, {
           email: email,
           password: password,
         })
         .then((response) => {
           if (response.data.result == 1) {
-            navigation.navigate('home');
+            navigation.navigate('home', {
+              email: email,
+              password: password,
+            });
           }
         });
     } catch (error) {
@@ -39,13 +42,16 @@ const Signin = ({ navigation }) => {
         Alert.alert('Warning', 'Please write exactly one email address');
       } else {
         await axios
-          .get(`http://localhost:3000/login/checklogin`, {
+          .post(`http://192.168.0.104:3000/login/checklogin`, {
             email: email,
             password: password,
           })
           .then((response) => {
-            if (response.data.result == 1) {
-              navigation.navigate('home', email, password);
+            if (response.data[0].result != 0) {
+              navigation.navigate('home', {
+                email: email,
+                password: password,
+              });
             }
           });
       }
