@@ -22,7 +22,7 @@ const CreateAccount = ({ navigation }) => {
       } else {
         try {
           await axios
-            .post('http://192.168.59.7:3000/login/insertuser', {
+            .post('http://192.168.86.6:3000/login/insertuser', {
               name: email,
               password: password,
             })

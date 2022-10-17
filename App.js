@@ -11,6 +11,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import ForgotPassword from './screens/ForgotPassword';
 import Home from './screens/Home';
 import Product from './screens/Product';
+import DefaultPage from './screens/DefaultPage';
 
 const Stack = createStackNavigator();
 
@@ -71,6 +72,20 @@ export default function App() {
             headerTitle: '',
             headerShown: true,
           }}
+        />
+
+        <Stack.Screen
+          name="detailproduct"
+          component={DefaultPage}
+          options={({ navigation, route }) => ({
+            headerTitle: route.params.title,
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          })}
         />
       </Stack.Navigator>
     </NavigationContainer>

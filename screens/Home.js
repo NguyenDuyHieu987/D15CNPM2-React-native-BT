@@ -17,7 +17,7 @@ const Home = ({ navigation, route }) => {
   const getData = () => {
     try {
       axios
-        .post(`http://192.168.59.7:3000/login/getuser`, {
+        .post(`http://192.168.86.6:3000/login/getuser`, {
           email: email,
           password: password,
         })
@@ -35,7 +35,7 @@ const Home = ({ navigation, route }) => {
     } else {
       try {
         axios
-          .post(`http://192.168.59.7:3000/login/updateuser/${userId}`, {
+          .post(`http://192.168.86.6:3000/login/updateuser/${userId}`, {
             password: password,
           })
           .then((response) => {
@@ -57,7 +57,7 @@ const Home = ({ navigation, route }) => {
       await AsyncStorage.clear();
 
       axios
-        .post(`http://192.168.59.7:3000/login/deleteuser/${userId}`)
+        .post(`http://192.168.86.6:3000/login/deleteuser/${userId}`)
         .then((response) => {
           if (response.data) {
             navigation.navigate('sigin');

@@ -4,21 +4,24 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Product = () => {
+const Product = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [type, setType] = useState([]);
   const [isSelected, setIsSelected] = useState('All');
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getData();
   }, []);
   const getData = async () => {
     await axios
-      .get(`http://192.168.59.7:3000/product/gettype`)
+      .get(`http://192.168.86.6:3000/product/gettype`)
       .then((response) => {
         setType([{ danh_muc: 'All' }].concat(response.data));
       })
@@ -26,24 +29,31 @@ const Product = () => {
         if (axios.isCancel(e)) return;
       });
   };
+
   useEffect(() => {
+    setData([]);
+    setOffset(0);
     getDataByType();
   }, [isSelected]);
 
   const getDataByType = async () => {
     isSelected == 'All'
       ? await axios
-          .get(`http://192.168.59.7:3000/product/getall`)
+          .get(`http://192.168.86.6:3000/product/getall?offset=${offset}`)
           .then((response) => {
-            setData(response.data);
+            setData(data.concat(response.data));
+            setLoading(false);
           })
           .catch((e) => {
             if (axios.isCancel(e)) return;
           })
       : await axios
-          .get(`http://192.168.59.7:3000/product/getbytype?type=${isSelected}`)
+          .get(
+            `http://192.168.86.6:3000/product/getbytype?type=${isSelected}&offset=${offset}`
+          )
           .then((response) => {
-            setData(response.data);
+            setData(data.concat(response.data));
+            setLoading(false);
           })
           .catch((e) => {
             if (axios.isCancel(e)) return;
@@ -51,7 +61,7 @@ const Product = () => {
   };
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.TVSubMenuContainer}>
         <FlatList
           spacing={10}
@@ -62,42 +72,19 @@ const Product = () => {
             <TouchableOpacity
               activeOpacity={0.5}
               onPress={() => {
-                setIsSelected(item.danh_muc);
+                // setIsSelected(item.danh_muc);
+                navigation.navigate('detailproduct', { title: item.danh_muc });
               }}
             >
               <Text
                 style={{
                   ...styles.TVSubMenuText,
-                  color: item.danh_muc === isSelected ? 'black' : 'gray',
+                  // color: item.danh_muc === isSelected ? 'black' : 'gray',
                 }}
               >
                 {item.danh_muc}
               </Text>
             </TouchableOpacity>
-          )}
-        />
-      </View>
-
-      <View style={{ paddingHorizontal: 20, marginTop: 20 }}>
-        <FlatList
-          spacing={10}
-          data={data}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View
-              style={{
-                paddingVertical: 10,
-                width: '100%',
-                borderWidth: 1,
-                borderColor: 'gray',
-                paddingHorizontal: 10,
-              }}
-            >
-              <Text style={{ fontSize: 17 }}>{'Name: ' + item.name}</Text>
-              <Text style={{ fontSize: 17 }}>{'Type: ' + item.danh_muc}</Text>
-              <Text style={{ fontSize: 17 }}>{'Color: ' + item.color}</Text>
-              <Text style={{ fontSize: 17 }}>{'Price: ' + item.price}</Text>
-            </View>
           )}
         />
       </View>

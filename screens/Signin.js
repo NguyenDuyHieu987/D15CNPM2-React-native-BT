@@ -16,7 +16,7 @@ const Signin = ({ navigation }) => {
   const getData = () => {
     try {
       axios
-        .get(`http://192.168.59.7:3000/login/checklogin`, {
+        .get(`http://192.168.86.6:3000/login/checklogin`, {
           email: email,
           password: password,
         })
@@ -45,7 +45,7 @@ const Signin = ({ navigation }) => {
         Alert.alert('Warning', 'Please write exactly one email address');
       } else {
         await axios
-          .post(`http://192.168.59.7:3000/login/checklogin`, {
+          .post(`http://192.168.86.6:3000/login/checklogin`, {
             email: email,
             password: password,
           })
