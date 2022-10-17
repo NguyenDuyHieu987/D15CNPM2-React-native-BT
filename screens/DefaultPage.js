@@ -13,7 +13,7 @@ import axios from 'axios';
 
 const DefaultPage = ({ route }) => {
   const [data, setData] = useState([]);
-  const [offset, setOffset] = useState(0);
+  var [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -62,9 +62,30 @@ const DefaultPage = ({ route }) => {
   //   };
 
   const handleOnLoadMore = () => {
-    setOffset(offset + 5);
+    setOffset((offset += 6));
     setLoading(true);
     getDataByType();
+  };
+
+  const renderFooter = () => {
+    return (
+      <View
+        style={{
+          marginVertical: 10,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => {
+            handleOnLoadMore();
+          }}
+        >
+          <Text style={{ color: 'blue', fontSize: 20 }}>Load more</Text>
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   return (
@@ -73,10 +94,11 @@ const DefaultPage = ({ route }) => {
         <FlatList
           spacing={10}
           data={data}
-          //   keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item, index) => index.toString()}
           //   onEndReached={handleEndReached}
           //   onEndReachedThreshold={1}
-          ListFooterComponent={loading ? renderFooter : null}
+          //   ListFooterComponent={loading ? renderFooter : null}
+          ListFooterComponent={renderFooter}
           renderItem={({ item }) => (
             <View
               style={{
@@ -96,22 +118,6 @@ const DefaultPage = ({ route }) => {
             </View>
           )}
         />
-      </View>
-      <View
-        style={{
-          marginBottom: 200,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => {
-            handleOnLoadMore();
-          }}
-        >
-          <Text style={{ color: 'blue' }}>Load more</Text>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
