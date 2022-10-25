@@ -12,6 +12,7 @@ import ForgotPassword from './screens/ForgotPassword';
 import Home from './screens/Home';
 import Product from './screens/Product';
 import DefaultPage from './screens/DefaultPage';
+import DetailProduct from './screens/DetailProduct';
 
 const Stack = createStackNavigator();
 
@@ -75,8 +76,22 @@ export default function App() {
         />
 
         <Stack.Screen
-          name="detailproduct"
+          name="defaultPage"
           component={DefaultPage}
+          options={({ navigation, route }) => ({
+            headerTitle: route.params.title,
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTintColor: 'white',
+            headerTitleAlign: 'center',
+            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+          })}
+        />
+
+        <Stack.Screen
+          name="detailProduct"
+          component={DetailProduct}
           options={({ navigation, route }) => ({
             headerTitle: route.params.title,
             headerStyle: {

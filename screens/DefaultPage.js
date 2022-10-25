@@ -11,7 +11,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const DefaultPage = ({ route }) => {
+const DefaultPage = ({ route, navigation }) => {
   const [data, setData] = useState([]);
   var [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -100,22 +100,31 @@ const DefaultPage = ({ route }) => {
           //   ListFooterComponent={loading ? renderFooter : null}
           ListFooterComponent={renderFooter}
           renderItem={({ item }) => (
-            <View
-              style={{
-                paddingVertical: 10,
-                width: '100%',
-                borderWidth: 1,
-                borderColor: 'gray',
-                paddingHorizontal: 10,
-                marginTop: 10,
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('detailProduct', {
+                  title: item.name,
+                  id: item.id,
+                });
               }}
             >
-              <Text style={{ fontSize: 17 }}>{'ID: ' + item.id}</Text>
-              <Text style={{ fontSize: 17 }}>{'Name: ' + item.name}</Text>
-              <Text style={{ fontSize: 17 }}>{'Type: ' + item.danh_muc}</Text>
-              <Text style={{ fontSize: 17 }}>{'Color: ' + item.color}</Text>
-              <Text style={{ fontSize: 17 }}>{'Price: ' + item.price}</Text>
-            </View>
+              <View
+                style={{
+                  paddingVertical: 10,
+                  width: '100%',
+                  borderWidth: 1,
+                  borderColor: 'gray',
+                  paddingHorizontal: 10,
+                  marginTop: 10,
+                }}
+              >
+                <Text style={{ fontSize: 17 }}>{'ID: ' + item.id}</Text>
+                <Text style={{ fontSize: 17 }}>{'Name: ' + item.name}</Text>
+                <Text style={{ fontSize: 17 }}>{'Type: ' + item.danh_muc}</Text>
+                <Text style={{ fontSize: 17 }}>{'Color: ' + item.color}</Text>
+                <Text style={{ fontSize: 17 }}>{'Price: ' + item.price}</Text>
+              </View>
+            </TouchableOpacity>
           )}
         />
       </View>

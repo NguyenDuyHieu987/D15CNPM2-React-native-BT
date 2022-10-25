@@ -73,7 +73,7 @@ const Product = ({ navigation }) => {
               activeOpacity={0.5}
               onPress={() => {
                 // setIsSelected(item.danh_muc);
-                navigation.navigate('detailproduct', { title: item.danh_muc });
+                navigation.navigate('defaultPage', { title: item.danh_muc });
               }}
             >
               <Text
