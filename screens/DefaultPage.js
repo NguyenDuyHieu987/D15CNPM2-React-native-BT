@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   TouchableOpacity,
+  Image,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -116,13 +117,30 @@ const DefaultPage = ({ route, navigation }) => {
                   borderColor: 'gray',
                   paddingHorizontal: 10,
                   marginTop: 10,
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                  paddingRight: 40,
                 }}
               >
-                <Text style={{ fontSize: 17 }}>{'ID: ' + item.id}</Text>
-                <Text style={{ fontSize: 17 }}>{'Name: ' + item.name}</Text>
-                <Text style={{ fontSize: 17 }}>{'Type: ' + item.danh_muc}</Text>
-                <Text style={{ fontSize: 17 }}>{'Color: ' + item.color}</Text>
-                <Text style={{ fontSize: 17 }}>{'Price: ' + item.price}</Text>
+                <View>
+                  <Text style={{ fontSize: 17 }}>{'ID: ' + item.id}</Text>
+                  <Text style={{ fontSize: 17 }}>{'Name: ' + item.name}</Text>
+                  <Text style={{ fontSize: 17 }}>
+                    {'Type: ' + item.danh_muc}
+                  </Text>
+                  <Text style={{ fontSize: 17 }}>{'Color: ' + item.color}</Text>
+                  <Text style={{ fontSize: 17 }}>{'Price: ' + item.price}</Text>
+                </View>
+                <Image
+                  source={{
+                    uri: item?.image
+                      ? item?.image
+                      : 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSGHLkd7dH4DZNzfSBATKZd10dsn3VZF88d-AESTwcl9zNFBMMXutADx96AVdDoLSJ_5AfLlnQUlE5mC3K1B0mA6qLaG9zbvBQ&usqp=CAc',
+                  }}
+                  resizeMode="contain"
+                  style={{ width: '100%', height: '100%' }}
+                />
               </View>
             </TouchableOpacity>
           )}
